@@ -20,7 +20,7 @@ webserver.listen(8000,function(req,res) {
 				page.evaluate(function(){
 					document.body.bgColor = 'white';
 				});
-				
+
 				page.viewportSize = req.post.viewport || {width:1276,height:800};
 				page.scrollPosition = req.post.scroll || {top:0,left:0};
 
@@ -47,6 +47,8 @@ webserver.listen(8000,function(req,res) {
 
 			if(html && url) {
 				console.log('设置内容');
+				html = html.replace(/<script[^<]*?<\/script>/g,'');
+				console.log(html);
 				page.onLoadFinished = cb;
 				page.setContent(html, url);
 			}
