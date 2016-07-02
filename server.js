@@ -22,7 +22,12 @@ webserver.listen(8000,function(req,res) {
 				});
 
 				page.viewportSize = req.post.viewport || {width:1276,height:800};
-				page.scrollPosition = req.post.scroll || {top:0,left:0};
+				page.clipRect = {
+					top:req.post.scroll.top || 0,
+					left:req.post.scroll.left || 0,
+					width:page.viewportSize.width,
+					height:page.viewportSize.height
+				};
 
 				page.render(root_path+filename, {format:imgtype});
 				console.log(filename);
@@ -66,7 +71,7 @@ webserver.listen(8000,function(req,res) {
 	}
 	else {
 		res.statusCode = 400;
-		res.send('bad request');
+		res.write('bad request');
 		res.close();
 	}
 });
