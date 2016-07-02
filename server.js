@@ -21,9 +21,13 @@ webserver.listen(8000,function(req,res) {
 					document.body.bgColor = 'white';
 				});
 
+				var scrollHeight = page.evaluate(function() {
+					return document.body.scrollHeight;
+				}) || 99999 ;
+
 				page.viewportSize = req.post.viewport || {width:1276,height:800};
 				page.clipRect = {
-					top:req.post.scroll.top || 0,
+					top:req.post.scroll.top?( (req.post.scroll.top + page.viewportSize.height) > scrollHeight ? scrollHeight - page.viewportSize.height:req.post.scroll.top ):0,
 					left:req.post.scroll.left || 0,
 					width:page.viewportSize.width,
 					height:page.viewportSize.height
